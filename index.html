@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Google Fonts Inter -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
   <script>
     tailwind.config = {
       theme: {
@@ -41,7 +42,6 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between selection:bg-brand-500 selection:text-white">
 
-  <!-- HEADER -->
   <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
     <div class="max-w-5xl mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-3">
       <div class="flex items-center gap-3">
@@ -52,7 +52,7 @@
           <h1 class="font-bold text-slate-900 text-lg sm:text-xl leading-tight">Actualización de Datos</h1>
           <p class="text-xs text-slate-500 flex items-center gap-1.5 mt-0.5">
             <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            Conexión con Google Sheets activa
+            Conexión activa con Google Sheets
           </p>
         </div>
       </div>
@@ -68,23 +68,21 @@
     </div>
   </header>
 
-  <!-- MAIN CONTAINER -->
   <main class="max-w-4xl mx-auto px-4 py-8 w-full flex-grow">
     
-    <!-- BANNER DE SEGURIDAD -->
     <div class="mb-6 p-4 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 flex items-start gap-3 shadow-xs">
       <div class="p-2 rounded-lg bg-blue-500/10 text-blue-600 shrink-0">
         <i class="fa-solid fa-lock text-lg"></i>
       </div>
       <div>
-        <h3 class="text-sm font-semibold text-slate-800">Inicio de sesión anónimo</h3>
+        <h3 class="text-sm font-semibold text-slate-800">Formulario Directo a Google Drive</h3>
         <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">
-          Este formulario guarda las respuestas directamente en tu Google Drive. No solicita contraseñas ni requiere iniciar sesión con cuenta de Google.
+          Este formulario guarda tus respuestas directamente en tu Hoja de Cálculo. No requiere iniciar sesión de correo.
         </p>
       </div>
     </div>
 
-    <!-- NAVEGACIÓN POR PASOS (TABS) -->
+    <!-- Navigation Tabs -->
     <div class="mb-6 bg-white p-2 rounded-2xl border border-slate-200 shadow-xs grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-medium text-slate-600">
       <button type="button" id="tab-btn-1" onclick="cambiarPaso(1)" class="tab-btn px-3 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all bg-brand-600 text-white font-semibold shadow-xs">
         <span class="w-5 h-5 rounded-full border border-white/40 flex items-center justify-center text-[10px]">1</span>
@@ -104,7 +102,6 @@
       </button>
     </div>
 
-    <!-- FORMULARIO -->
     <form id="encuestaForm" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden p-6 sm:p-8">
 
       <!-- PASO 1: DATOS PERSONALES -->
@@ -151,7 +148,7 @@
         </div>
       </div>
 
-      <!-- PASO 2: DOMICILIO Y CONTACTO -->
+      <!-- PASO 2: CONTACTO Y DOMICILIO -->
       <div id="paso-2" class="paso-contenido hidden space-y-6">
         <div class="border-b border-slate-100 pb-4">
           <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
@@ -161,6 +158,28 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">
+              Código Postal <span class="text-xs text-brand-600 font-normal">(Escribe 5 dígitos)</span>
+            </label>
+            <div class="relative">
+              <input type="text" id="codigoPostal" maxlength="5" placeholder="Ej. 25000" oninput="buscarCP(this.value)" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all">
+              <div id="cpSpinner" class="hidden absolute right-3 top-3 text-slate-400">
+                <i class="fa-solid fa-circle-notch animate-spin text-sm"></i>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Ciudad</label>
+            <input type="text" id="ciudad" placeholder="Auto-completado por C.P." class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 bg-slate-50 focus:outline-none transition-all">
+          </div>
+
+          <div class="sm:col-span-2" id="contenedorColonia">
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Colonia o Fraccionamiento</label>
+            <input type="text" id="colonia" placeholder="Ej. Centro" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all">
+          </div>
+
           <div class="sm:col-span-2">
             <label class="block text-xs font-semibold text-slate-700 mb-1">Calle</label>
             <input type="text" id="calle" placeholder="Ej. Av. Hidalgo" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all">
@@ -172,26 +191,11 @@
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Colonia o Fraccionamiento</label>
-            <input type="text" id="colonia" placeholder="Ej. Centro" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all">
-          </div>
-
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Código Postal</label>
-            <input type="text" id="codigoPostal" placeholder="Ej. 25000" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all">
-          </div>
-
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Ciudad</label>
-            <input type="text" id="ciudad" placeholder="Ej. Saltillo" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all">
-          </div>
-
-          <div>
             <label class="block text-xs font-semibold text-slate-700 mb-1">Teléfono (WhatsApp) <span class="text-rose-500">*</span></label>
             <input type="tel" id="telefonoWhatsapp" required placeholder="Ej. 8441234567" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all">
           </div>
 
-          <div>
+          <div class="sm:col-span-2">
             <label class="block text-xs font-semibold text-slate-700 mb-1">Correo Electrónico</label>
             <input type="email" id="correo" placeholder="ejemplo@correo.com" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all">
           </div>
@@ -214,13 +218,13 @@
         </div>
       </div>
 
-      <!-- PASO 3: TALLAS DE UNIFORME -->
+      <!-- PASO 3: TALLAS Y MEDIDAS -->
       <div id="paso-3" class="paso-contenido hidden space-y-6">
         <div class="border-b border-slate-100 pb-4">
           <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
             <i class="fa-solid fa-shirt text-brand-600"></i> Tallas y Medidas
           </h2>
-          <p class="text-xs text-slate-500">Selecciona las tallas correspondientes para dotación de ropa/equipo.</p>
+          <p class="text-xs text-slate-500">Selecciona las tallas correspondientes para dotación de ropa y calzado.</p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -259,7 +263,6 @@
           <p class="text-xs text-slate-500">Registro opcional de cónyuge e hijos para beneficios de la empresa.</p>
         </div>
 
-        <!-- PAREJA -->
         <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-4">
           <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
             <i class="fa-solid fa-heart text-rose-500"></i> Pareja o Cónyuge
@@ -276,22 +279,41 @@
           </div>
         </div>
 
-        <!-- HIJOS (HASTA 10 Camadas) -->
-        <div class="space-y-4">
-          <div class="flex items-center justify-between">
-            <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-              <i class="fa-solid fa-child-reaching text-amber-500"></i> Hijos Registrados
-            </h3>
-            <span class="text-[11px] text-slate-500">Se pueden registrar hasta 10 hijos</span>
+        <div class="p-4 rounded-xl border border-slate-200 bg-white space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
+                <i class="fa-solid fa-child-reaching text-amber-500"></i> ¿Tiene Hijos?
+              </label>
+              <select id="tieneHijos" onchange="toggleSeccionHijos()" class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 bg-white">
+                <option value="No">No</option>
+                <option value="Sí">Sí</option>
+              </select>
+            </div>
+
+            <div id="divCantidadHijos" class="hidden">
+              <label class="block text-xs font-semibold text-slate-700 mb-1">¿Cuántos hijos tiene?</label>
+              <select id="cantidadHijos" onchange="actualizarCamposHijos()" class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 bg-white">
+                <option value="1">1 Hijo</option>
+                <option value="2">2 Hijos</option>
+                <option value="3">3 Hijos</option>
+                <option value="4">4 Hijos</option>
+                <option value="5">5 Hijos</option>
+                <option value="6">6 Hijos</option>
+                <option value="7">7 Hijos</option>
+                <option value="8">8 Hijos</option>
+                <option value="9">9 Hijos</option>
+                <option value="10">10 Hijos</option>
+              </select>
+            </div>
           </div>
 
-          <div class="max-h-72 overflow-y-auto custom-scrollbar space-y-3 pr-1" id="contenedor-hijos">
+          <div class="max-h-80 overflow-y-auto custom-scrollbar space-y-3 pr-1 pt-2 hidden" id="contenedor-hijos">
             <!-- Hijos generados dinámicamente -->
           </div>
         </div>
       </div>
 
-      <!-- FOOTER DEL FORMULARIO CON NAVEGACIÓN -->
       <div class="mt-8 pt-6 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
         <button type="button" id="btnAnterior" onclick="pasoAnterior()" class="px-4 py-2.5 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all flex items-center gap-2 invisible">
           <i class="fa-solid fa-arrow-left"></i> Anterior
@@ -309,40 +331,112 @@
       </div>
     </form>
 
-    <!-- ESTADO DE ENVÍO Y ALERTA DE CARGA -->
+    <!-- Notification Alert -->
     <div id="statusAlert" class="mt-4 hidden p-4 rounded-xl text-xs font-semibold border text-center transition-all"></div>
 
   </main>
 
   <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500">
     <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-      <p>© 2026 Sistema de Actualización de Datos. Registros directos a tu Hoja de Cálculo.</p>
+      <p>© Sistema de Actualización de Datos. Registros directos a tu Hoja de Cálculo.</p>
       <div class="flex items-center gap-3 text-slate-400">
         <span class="flex items-center gap-1"><i class="fa-solid fa-shield-halved text-emerald-500"></i> Encriptación SSL</span>
         <span>•</span>
-        <span>Google Apps Script Backend</span>
+        <span>Google Apps Script Endpoint</span>
       </div>
     </div>
   </footer>
 
   <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwO8rSw4F7N9kZSWvEyILEn8BE0BBO7KcyspJgdMOLoAtJk4QCvrdhZMG7-pU8IbAaT/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyrqZUkeMlxqeixRHud50QEgo2z9yim7iO7J3t93cQwg2r0pv2dOS-Qo73SDWCVyVfp/exec';
     let pasoActual = 1;
 
-    // Generar inputs de Hijos de 1 a 10
-    function generarCamposHijos() {
+    // BUSCAR CÓDIGO POSTAL EN GOOGLE SHEET
+    let cpTimer;
+    function buscarCP(cp) {
+      clearTimeout(cpTimer);
+      const spinner = document.getElementById('cpSpinner');
+      const inputCiudad = document.getElementById('ciudad');
+      const contenedorCol = document.getElementById('contenedorColonia');
+
+      if (cp.trim().length !== 5) {
+        spinner.classList.add('hidden');
+        return;
+      }
+
+      spinner.classList.remove('hidden');
+
+      cpTimer = setTimeout(() => {
+        fetch(`${SCRIPT_URL}?cp=${encodeURIComponent(cp.trim())}`)
+          .then(res => res.json())
+          .then(data => {
+            spinner.classList.add('hidden');
+            if (data.status === 'success') {
+              if (data.ciudad) inputCiudad.value = data.ciudad;
+
+              if (data.colonias && data.colonias.length > 0) {
+                let optionsHtml = data.colonias.map(c => `<option value="${c}">${c}</option>`).join('');
+                contenedorCol.innerHTML = `
+                  <label class="block text-xs font-semibold text-slate-700 mb-1">Colonia o Fraccionamiento</label>
+                  <select id="colonia" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 bg-white">
+                    <option value="">-- Seleccionar Colonia --</option>
+                    ${optionsHtml}
+                  </select>
+                `;
+              } else {
+                restaurarInputColonia();
+              }
+            } else {
+              restaurarInputColonia();
+            }
+          })
+          .catch(() => {
+            spinner.classList.add('hidden');
+            restaurarInputColonia();
+          });
+      }, 300);
+    }
+
+    function restaurarInputColonia() {
+      const contenedorCol = document.getElementById('contenedorColonia');
+      contenedorCol.innerHTML = `
+        <label class="block text-xs font-semibold text-slate-700 mb-1">Colonia o Fraccionamiento</label>
+        <input type="text" id="colonia" placeholder="Ej. Centro" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all">
+      `;
+    }
+
+    // MANEJO DINÁMICO DE HIJOS
+    function toggleSeccionHijos() {
+      const tiene = document.getElementById('tieneHijos').value;
+      const divCant = document.getElementById('divCantidadHijos');
+      const contHijos = document.getElementById('contenedor-hijos');
+
+      if (tiene === 'Sí') {
+        divCant.classList.remove('hidden');
+        contHijos.classList.remove('hidden');
+        actualizarCamposHijos();
+      } else {
+        divCant.classList.add('hidden');
+        contHijos.classList.add('hidden');
+        contHijos.innerHTML = '';
+      }
+    }
+
+    function actualizarCamposHijos() {
+      const num = parseInt(document.getElementById('cantidadHijos').value) || 0;
       const container = document.getElementById('contenedor-hijos');
       let html = '';
-      for (let i = 1; i <= 10; i++) {
+
+      for (let i = 1; i <= num; i++) {
         html += `
-          <div class="p-3.5 rounded-xl border border-slate-200 bg-white grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+          <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/50 grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
             <div>
-              <label class="block text-[11px] font-semibold text-slate-600 mb-1">Hijo ${i}</label>
-              <input type="text" id="hijo${i}" placeholder="Nombre del hijo ${i}" class="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-300 focus:outline-none focus:border-brand-500">
+              <label class="block text-[11px] font-semibold text-slate-600 mb-1">Nombre de Hijo ${i}</label>
+              <input type="text" id="hijo${i}" placeholder="Nombre completo del hijo ${i}" class="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-300 focus:outline-none focus:border-brand-500 bg-white">
             </div>
             <div>
               <label class="block text-[11px] font-semibold text-slate-600 mb-1">Fecha Nac. Hijo ${i}</label>
-              <input type="date" id="fechaNacHijo${i}" class="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-300 focus:outline-none focus:border-brand-500">
+              <input type="date" id="fechaNacHijo${i}" class="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-300 focus:outline-none focus:border-brand-500 bg-white">
             </div>
           </div>
         `;
@@ -350,17 +444,15 @@
       container.innerHTML = html;
     }
 
+    // NAVEGACIÓN ENTRE PASOS
     function cambiarPaso(paso) {
-      // Validar requeridos si avanzamos hacia adelante
       if (paso > pasoActual && !validarPasoActual()) return;
 
       pasoActual = paso;
 
-      // Ocultar todos los pasos
       document.querySelectorAll('.paso-contenido').forEach(el => el.classList.add('hidden'));
       document.getElementById(`paso-${paso}`).classList.remove('hidden');
 
-      // Actualizar tabs estilo
       document.querySelectorAll('.tab-btn').forEach((btn, index) => {
         const num = index + 1;
         if (num === paso) {
@@ -372,7 +464,6 @@
         }
       });
 
-      // Botones
       const btnAnt = document.getElementById('btnAnterior');
       const btnSig = document.getElementById('btnSiguiente');
       const btnEnv = document.getElementById('btnEnviar');
@@ -409,18 +500,16 @@
       return true;
     }
 
-    // Datos de Prueba
     function llenarDatosPrueba() {
       document.getElementById('nombre').value = 'Roberto';
       document.getElementById('segundoNombre').value = 'Alejandro';
       document.getElementById('apellidoPaterno').value = 'Martínez';
       document.getElementById('apellidoMaterno').value = 'Sánchez';
       document.getElementById('estadoCivil').value = 'Casado(a)';
+      document.getElementById('codigoPostal').value = '25000';
+      buscarCP('25000');
       document.getElementById('calle').value = 'Av. Universidad';
       document.getElementById('numeroDomicilio').value = '845';
-      document.getElementById('colonia').value = 'República Norte';
-      document.getElementById('codigoPostal').value = '25280';
-      document.getElementById('ciudad').value = 'Saltillo';
       document.getElementById('telefonoWhatsapp').value = '8441239876';
       document.getElementById('correo').value = 'roberto.martinez@ejemplo.com';
       document.getElementById('nombreContactoEmergencia').value = 'Laura Sánchez';
@@ -430,15 +519,23 @@
       document.getElementById('pareja').value = 'Laura Sánchez Flores';
       document.getElementById('fechaNacPareja').value = '1988-05-14';
 
-      document.getElementById('hijo1').value = 'Mateo Martínez Sánchez';
-      document.getElementById('fechaNacHijo1').value = '2015-08-20';
-      document.getElementById('hijo2').value = 'Sofia Martínez Sánchez';
-      document.getElementById('fechaNacHijo2').value = '2018-11-03';
+      document.getElementById('tieneHijos').value = 'Sí';
+      toggleSeccionHijos();
+      document.getElementById('cantidadHijos').value = '2';
+      actualizarCamposHijos();
 
-      alert('¡Datos de prueba cargados correctamente!');
+      setTimeout(() => {
+        if (document.getElementById('hijo1')) document.getElementById('hijo1').value = 'Mateo Martínez Sánchez';
+        if (document.getElementById('fechaNacHijo1')) document.getElementById('fechaNacHijo1').value = '2015-08-20';
+        if (document.getElementById('hijo2')) document.getElementById('hijo2').value = 'Sofia Martínez Sánchez';
+        if (document.getElementById('fechaNacHijo2')) document.getElementById('fechaNacHijo2').value = '2018-11-03';
+      }, 100);
+
+      const status = document.getElementById('statusAlert');
+      status.className = 'mt-4 p-3 rounded-xl text-xs font-medium border bg-blue-50 text-blue-800 border-blue-200 block text-center';
+      status.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles mr-1"></i> ¡Datos demo cargados!';
     }
 
-    // Enviar datos
     document.getElementById('encuestaForm').addEventListener('submit', function(e) {
       e.preventDefault();
 
@@ -449,7 +546,7 @@
       btnEnv.innerHTML = '<i class="fa-solid fa-circle-notch animate-spin"></i> Enviando...';
 
       status.className = 'mt-4 p-4 rounded-xl text-xs font-medium border bg-blue-50 text-blue-800 border-blue-200 block text-center';
-      status.innerHTML = '<i class="fa-solid fa-spinner animate-spin mr-1"></i> Enviando respuesta a Google Drive...';
+      status.innerHTML = '<i class="fa-solid fa-spinner animate-spin mr-1"></i> Enviando registro a tu Google Sheet...';
 
       const payload = {
         nombre: document.getElementById('nombre').value,
@@ -459,7 +556,7 @@
         estadoCivil: document.getElementById('estadoCivil').value,
         calle: document.getElementById('calle').value,
         numeroDomicilio: document.getElementById('numeroDomicilio').value,
-        colonia: document.getElementById('colonia').value,
+        colonia: document.getElementById('colonia') ? document.getElementById('colonia').value : '',
         codigoPostal: document.getElementById('codigoPostal').value,
         ciudad: document.getElementById('ciudad').value,
         telefonoWhatsapp: document.getElementById('telefonoWhatsapp').value,
@@ -472,10 +569,11 @@
         fechaNacPareja: document.getElementById('fechaNacPareja').value
       };
 
-      // Mapear hasta 10 hijos
       for (let i = 1; i <= 10; i++) {
-        payload[`hijo${i === 1 ? '' : ' ' + i}`] = document.getElementById(`hijo${i}`).value;
-        payload[`fechaNacHijo${i === 1 ? '' : ' ' + i}`] = document.getElementById(`fechaNacHijo${i}`).value;
+        const elHijo = document.getElementById(`hijo${i}`);
+        const elFecha = document.getElementById(`fechaNacHijo${i}`);
+        payload[`hijo${i}`] = elHijo ? elHijo.value : '';
+        payload[`fechaNacHijo${i}`] = elFecha ? elFecha.value : '';
       }
 
       fetch(SCRIPT_URL, {
@@ -486,26 +584,22 @@
       })
       .then(() => {
         status.className = 'mt-4 p-4 rounded-xl text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200 block text-center';
-        status.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 text-sm mr-1"></i> ¡Registro enviado exitosamente a tu Google Sheet!';
+        status.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 text-sm mr-1"></i> ¡Registro guardado exitosamente en Google Drive!';
         
         document.getElementById('encuestaForm').reset();
+        toggleSeccionHijos();
         btnEnv.disabled = false;
         btnEnv.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Guardar en Google Drive';
         
-        setTimeout(() => cambiarPaso(1), 3000);
+        setTimeout(() => cambiarPaso(1), 3500);
       })
       .catch(err => {
         status.className = 'mt-4 p-4 rounded-xl text-xs font-semibold border bg-rose-50 text-rose-800 border-rose-200 block text-center';
-        status.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1"></i> Error al conectar con Google Apps Script. Por favor reintenta.';
+        status.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1"></i> Error al conectar con Google Apps Script. Reintenta por favor.';
         btnEnv.disabled = false;
         btnEnv.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Guardar en Google Drive';
       });
     });
-
-    // Inicializar al cargar
-    window.onload = function() {
-      generarCamposHijos();
-    };
   </script>
 </body>
 </html>
