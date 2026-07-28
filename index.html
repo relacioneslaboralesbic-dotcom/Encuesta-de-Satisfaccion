@@ -3,661 +3,373 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Actualización de Datos - Registro Anónimo</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- FontAwesome Icons CDN -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Google Fonts Inter -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          },
-          colors: {
-            brand: {
-              50: '#eff6ff',
-              100: '#dbeafe',
-              500: '#3b82f6',
-              600: '#2563eb',
-              700: '#1d4ed8',
-              800: '#1e40af',
-            }
-          }
-        }
-      }
-    }
-  </script>
+  <title>Actualización de Datos</title>
   <style>
-    body { font-family: 'Inter', sans-serif; }
-    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-    .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
-    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; color: #333; }
+    .container { max-width: 800px; background: white; margin: 0 auto; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    h2 { margin-top: 0; color: #1a365d; text-align: center; }
+    .badge { background: #e2e8f0; color: #475569; padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; display: block; width: fit-content; margin: 0 auto 25px auto; }
+    fieldset { border: 1px solid #cbd5e1; border-radius: 6px; padding: 20px; margin-bottom: 25px; background-color: #f8fafc; }
+    legend { font-weight: bold; color: #2563eb; padding: 0 10px; background: white; border-radius: 4px; border: 1px solid #cbd5e1; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; }
+    .form-group { display: flex; flex-direction: column; }
+    label { font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; color: #475569; }
+    input, select { padding: 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.95rem; }
+    input:focus, select:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 2px rgba(37,99,235,0.2); }
+    button { background-color: #2563eb; color: white; border: none; padding: 14px 20px; font-size: 1.1rem; border-radius: 6px; cursor: pointer; width: 100%; margin-top: 10px; font-weight: bold; transition: background-color 0.2s; }
+    button:hover { background-color: #1d4ed8; }
+    button:disabled { background-color: #94a3b8; cursor: not-allowed; }
+    #status { text-align: center; margin-top: 20px; font-weight: bold; padding: 10px; border-radius: 4px; }
+    #cp-status { font-size: 0.8rem; font-weight: normal; margin-top: 4px; }
+    .hidden { display: none; }
+    .demo-btn { background-color: #10b981; margin-bottom: 20px; }
+    .demo-btn:hover { background-color: #059669; }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between selection:bg-brand-500 selection:text-white">
+<body>
 
-  <!-- Header -->
-  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
-    <div class="max-w-5xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-brand-600 text-white flex items-center justify-center shadow-md shadow-brand-500/20">
-          <i class="fa-solid fa-file-pen text-lg"></i>
-        </div>
-        <div>
-          <h1 class="font-bold text-slate-900 text-base sm:text-lg leading-tight">Actualización de Datos</h1>
-          <p class="text-xs text-slate-500 flex items-center gap-1.5 mt-0.5">
-            <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            Conexión con Google Sheets
-          </p>
+<div class="container">
+  <h2>Formulario de Actualización de Datos</h2>
+  <div class="badge">🔒 Formulario Seguro y Anónimo</div>
+
+  <button type="button" class="demo-btn" id="btnDemo">Llenar con datos de prueba (Demo)</button>
+
+  <form id="datosForm">
+    <!-- DATOS PERSONALES -->
+    <fieldset>
+      <legend>1. Datos Personales</legend>
+      <div class="grid">
+        <div class="form-group"><label>Nombre *</label><input type="text" id="nombre" required></div>
+        <div class="form-group"><label>Segundo Nombre</label><input type="text" id="segundoNombre"></div>
+        <div class="form-group"><label>Apellido Paterno *</label><input type="text" id="apellidoPaterno" required></div>
+        <div class="form-group"><label>Apellido Materno</label><input type="text" id="apellidoMaterno"></div>
+        <div class="form-group"><label>Estado Civil</label>
+          <select id="estadoCivil">
+            <option value="">Seleccione...</option>
+            <option value="Soltero(a)">Soltero(a)</option>
+            <option value="Casado(a)">Casado(a)</option>
+            <option value="Unión Libre">Unión Libre</option>
+            <option value="Divorciado(a)">Divorciado(a)</option>
+            <option value="Viudo(a)">Viudo(a)</option>
+          </select>
         </div>
       </div>
+    </fieldset>
 
-      <div class="flex items-center gap-2">
-        <button type="button" onclick="toggleConfigModal()" class="px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-lg transition-colors flex items-center gap-1.5">
-          <i class="fa-solid fa-gear text-slate-500"></i> Configurar Endpoint
-        </button>
-        <button type="button" onclick="llenarDatosPrueba()" class="px-3 py-1.5 text-xs font-semibold text-brand-700 bg-brand-50 hover:bg-brand-100 border border-brand-200 rounded-lg transition-colors flex items-center gap-1.5">
-          <i class="fa-solid fa-wand-magic-sparkles"></i> Llenar demo
-        </button>
+    <!-- DOMICILIO Y CONTACTO -->
+    <fieldset>
+      <legend>2. Domicilio y Contacto</legend>
+      <div class="grid">
+        <div class="form-group">
+          <label>Código Postal *</label>
+          <input type="text" id="codigoPostal" maxlength="5" placeholder="Ej. 25000" required>
+          <div id="cp-status"></div>
+        </div>
+        <div class="form-group"><label>Ciudad</label><input type="text" id="ciudad" readonly placeholder="Se llena automáticamente"></div>
+        
+        <div class="form-group" id="container-colonia-select">
+          <label>Colonia o Fraccionamiento *</label>
+          <select id="colonia-select">
+            <option value="">Primero ingresa un C.P.</option>
+          </select>
+        </div>
+        <div class="form-group hidden" id="container-colonia-input">
+          <label>Escribe tu Colonia *</label>
+          <input type="text" id="colonia-input" placeholder="Escribe tu colonia">
+        </div>
+
+        <div class="form-group"><label>Calle</label><input type="text" id="calle"></div>
+        <div class="form-group"><label>Número Domicilio</label><input type="text" id="numeroDomicilio"></div>
+        
+        <div class="form-group"><label>Teléfono (WhatsApp) *</label><input type="tel" id="telefonoWhatsapp" required></div>
+        <div class="form-group"><label>Correo Electrónico</label><input type="email" id="correo"></div>
       </div>
-    </div>
-  </header>
+    </fieldset>
 
-  <main class="max-w-4xl mx-auto px-4 py-8 w-full flex-grow">
+    <!-- CONTACTO DE EMERGENCIA Y TALLAS -->
+    <fieldset>
+      <legend>3. Otros Datos</legend>
+      <div class="grid">
+        <div class="form-group"><label>Nombre Contacto Emergencia</label><input type="text" id="nombreContactoEmergencia"></div>
+        <div class="form-group"><label>Teléfono Emergencia</label><input type="tel" id="telefonoContactoEmergencia"></div>
+        <div class="form-group"><label>Talla de Playera</label>
+          <select id="tallaPlayera">
+            <option value="">Seleccione...</option>
+            <option value="XS">XS</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+            <option value="2XL">2XL</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Talla Calzado (Mexicana)</label><input type="number" step="0.5" id="tallaCalzado"></div>
+      </div>
+    </fieldset>
+
+    <!-- FAMILIA (PAREJA E HIJOS) -->
+    <fieldset>
+      <legend>4. Información Familiar</legend>
+      <div class="grid">
+        <div class="form-group"><label>Nombre de Pareja</label><input type="text" id="pareja"></div>
+        <div class="form-group"><label>Fecha Nacimiento Pareja</label><input type="date" id="fechaNacPareja"></div>
+      </div>
+      
+      <hr style="border: 0; border-top: 1px solid #cbd5e1; margin: 20px 0;">
+      
+      <div class="form-group" style="max-width: 200px; margin-bottom: 20px;">
+        <label>¿Tiene hijos?</label>
+        <select id="tieneHijos">
+          <option value="No">No</option>
+          <option value="Si">Sí</option>
+        </select>
+      </div>
+
+      <div class="form-group hidden" id="seccionCantidadHijos" style="max-width: 200px; margin-bottom: 20px;">
+        <label>¿Cuántos hijos tiene?</label>
+        <select id="cantidadHijos">
+          <option value="0">Seleccione...</option>
+          <option value="1">1</option><option value="2">2</option>
+          <option value="3">3</option><option value="4">4</option>
+          <option value="5">5</option><option value="6">6</option>
+          <option value="7">7</option><option value="8">8</option>
+          <option value="9">9</option><option value="10">10</option>
+        </select>
+      </div>
+
+      <div id="contenedorHijos" class="grid"></div>
+    </fieldset>
+
+    <button type="submit" id="btnEnviar">Guardar Registro</button>
+  </form>
+
+  <div id="status"></div>
+</div>
+
+<script>
+  // AQUÍ ESTÁ TU NUEVA URL CONFIGURADA
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby_NF8IOoVtzNthS1d0FqY8VGc2w3V482qoPSuG76pq0AhbRdFwZQdcdJKk41dJnBqU/exec';
+
+  // --- LÓGICA DE BÚSQUEDA DE CÓDIGO POSTAL ---
+  const cpInput = document.getElementById('codigoPostal');
+  const cpStatus = document.getElementById('cp-status');
+  const ciudadInput = document.getElementById('ciudad');
+  const coloniaSelect = document.getElementById('colonia-select');
+  const coloniaInput = document.getElementById('colonia-input');
+  const containerSelect = document.getElementById('container-colonia-select');
+  const containerInput = document.getElementById('container-colonia-input');
+  
+  let abortController = null;
+
+  cpInput.addEventListener('input', function() {
+    let cpValue = this.value.trim();
+    if (cpValue.length === 5) {
+      buscarCP(cpValue);
+    } else {
+      resetCPFields();
+    }
+  });
+
+  function resetCPFields() {
+    ciudadInput.value = '';
+    coloniaSelect.innerHTML = '<option value="">Primero ingresa un C.P.</option>';
+    cpStatus.innerText = '';
+    containerSelect.classList.remove('hidden');
+    containerInput.classList.add('hidden');
+    coloniaInput.value = '';
+  }
+
+  function buscarCP(cp) {
+    cpStatus.style.color = '#2563eb';
+    cpStatus.innerText = 'Buscando colonias...';
+    ciudadInput.value = 'Buscando...';
     
-    <div class="mb-6 p-4 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 flex items-start gap-3 shadow-xs">
-      <div class="p-2 rounded-lg bg-blue-500/10 text-blue-600 shrink-0">
-        <i class="fa-solid fa-database text-lg"></i>
-      </div>
-      <div>
-        <h3 class="text-sm font-semibold text-slate-800">Conectado a Hoja de Cálculo</h3>
-        <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">
-          Consulta códigos postales e ingresa registros de forma directa y segura sin requerir autenticación de Google.
-        </p>
-      </div>
-    </div>
+    if (abortController) abortController.abort();
+    abortController = new AbortController();
 
-    <!-- Navigation Tabs -->
-    <div class="mb-6 bg-white p-2 rounded-2xl border border-slate-200 shadow-xs grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-medium text-slate-600">
-      <button type="button" id="tab-btn-1" onclick="cambiarPaso(1)" class="tab-btn px-3 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all bg-brand-600 text-white font-semibold shadow-xs">
-        <span class="w-5 h-5 rounded-full border border-white/40 flex items-center justify-center text-[10px]">1</span>
-        <span>Personal</span>
-      </button>
-      <button type="button" id="tab-btn-2" onclick="cambiarPaso(2)" class="tab-btn px-3 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all hover:bg-slate-100">
-        <span class="w-5 h-5 rounded-full border border-slate-300 flex items-center justify-center text-[10px]">2</span>
-        <span>Contacto</span>
-      </button>
-      <button type="button" id="tab-btn-3" onclick="cambiarPaso(3)" class="tab-btn px-3 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all hover:bg-slate-100">
-        <span class="w-5 h-5 rounded-full border border-slate-300 flex items-center justify-center text-[10px]">3</span>
-        <span>Tallas</span>
-      </button>
-      <button type="button" id="tab-btn-4" onclick="cambiarPaso(4)" class="tab-btn px-3 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all hover:bg-slate-100">
-        <span class="w-5 h-5 rounded-full border border-slate-300 flex items-center justify-center text-[10px]">4</span>
-        <span>Familia</span>
-      </button>
-    </div>
-
-    <form id="encuestaForm" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden p-6 sm:p-8">
-
-      <!-- PASO 1: DATOS PERSONALES -->
-      <div id="paso-1" class="paso-contenido space-y-6">
-        <div class="border-b border-slate-100 pb-4">
-          <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-            <i class="fa-solid fa-user text-brand-600"></i> Datos Personales
-          </h2>
-          <p class="text-xs text-slate-500">Ingresa la información básica de identificación.</p>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Nombre <span class="text-rose-500">*</span></label>
-            <input type="text" id="nombre" required placeholder="Ej. Juan" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all">
-          </div>
-
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Segundo Nombre</label>
-            <input type="text" id="segundoNombre" placeholder="Ej. Carlos (Opcional)" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all">
-          </div>
-
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Apellido Paterno <span class="text-rose-500">*</span></label>
-            <input type="text" id="apellidoPaterno" required placeholder="Ej. Pérez" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all">
-          </div>
-
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Apellido Materno</label>
-            <input type="text" id="apellidoMaterno" placeholder="Ej. Gómez" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all">
-          </div>
-
-          <div class="sm:col-span-2">
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Estado Civil</label>
-            <select id="estadoCivil" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all bg-white">
-              <option value="">-- Seleccionar opción --</option>
-              <option value="Soltero(a)">Soltero(a)</option>
-              <option value="Casado(a)">Casado(a)</option>
-              <option value="Unión Libre">Unión Libre</option>
-              <option value="Divorciado(a)">Divorciado(a)</option>
-              <option value="Viudo(a)">Viudo(a)</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <!-- PASO 2: CONTACTO Y DOMICILIO -->
-      <div id="paso-2" class="paso-contenido hidden space-y-6">
-        <div class="border-b border-slate-100 pb-4">
-          <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-            <i class="fa-solid fa-location-dot text-brand-600"></i> Domicilio y Contacto
-          </h2>
-          <p class="text-xs text-slate-500">Dirección particular y medios de comunicación directos.</p>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">
-              Código Postal <span class="text-xs text-brand-600 font-normal">(Escribe 5 dígitos)</span>
-            </label>
-            <div class="relative">
-              <input type="text" id="codigoPostal" maxlength="5" placeholder="Ej. 25000" oninput="buscarCP(this.value)" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all">
-              <div id="cpSpinner" class="hidden absolute right-3 top-3 text-slate-400">
-                <i class="fa-solid fa-circle-notch animate-spin text-sm text-brand-600"></i>
-              </div>
-            </div>
-            <div id="cpStatusMsg"></div>
-          </div>
-
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Ciudad</label>
-            <input type="text" id="ciudad" placeholder="Auto-completado por C.P." class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 bg-slate-50 focus:outline-none transition-all">
-          </div>
-
-          <div class="sm:col-span-2" id="contenedorColonia">
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Colonia o Fraccionamiento</label>
-            <input type="text" id="colonia" placeholder="Ej. Centro" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all">
-          </div>
-
-          <div class="sm:col-span-2">
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Calle</label>
-            <input type="text" id="calle" placeholder="Ej. Av. Hidalgo" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all">
-          </div>
-
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Número de domicilio</label>
-            <input type="text" id="numeroDomicilio" placeholder="Ej. #123 Interior B" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all">
-          </div>
-
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Teléfono (WhatsApp) <span class="text-rose-500">*</span></label>
-            <input type="tel" id="telefonoWhatsapp" required placeholder="Ej. 8441234567" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all">
-          </div>
-
-          <div class="sm:col-span-2">
-            <label class="block text-xs font-semibold text-slate-700 mb-1">Correo Electrónico</label>
-            <input type="email" id="correo" placeholder="ejemplo@correo.com" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all">
-          </div>
-        </div>
-
-        <div class="pt-4 border-t border-slate-100">
-          <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-            <i class="fa-solid fa-phone-volume text-rose-500"></i> Contacto de Emergencia
-          </h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">Nombre de Contacto</label>
-              <input type="text" id="nombreContactoEmergencia" placeholder="Ej. María Gómez" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all">
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">Teléfono (WhatsApp)</label>
-              <input type="tel" id="telefonoContactoEmergencia" placeholder="Ej. 8449876543" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- PASO 3: TALLAS Y MEDIDAS -->
-      <div id="paso-3" class="paso-contenido hidden space-y-6">
-        <div class="border-b border-slate-100 pb-4">
-          <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-            <i class="fa-solid fa-shirt text-brand-600"></i> Tallas y Medidas
-          </h2>
-          <p class="text-xs text-slate-500">Selecciona las tallas correspondientes para dotación de ropa y calzado.</p>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/50">
-            <label class="block text-sm font-semibold text-slate-800 mb-2 flex items-center gap-2">
-              <i class="fa-solid fa-shirt text-brand-500"></i> ¿Cuál es tu talla de playera?
-            </label>
-            <select id="tallaPlayera" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all bg-white">
-              <option value="">-- Selecciona talla --</option>
-              <option value="XS">Extra Chica (XS)</option>
-              <option value="S">Chica (S)</option>
-              <option value="M">Mediana (M)</option>
-              <option value="L">Grande (L)</option>
-              <option value="XL">Extra Grande (XL)</option>
-              <option value="2XL">Doble Extra Grande (2XL)</option>
-              <option value="3XL">Triple Extra Grande (3XL)</option>
-            </select>
-          </div>
-
-          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/50">
-            <label class="block text-sm font-semibold text-slate-800 mb-2 flex items-center gap-2">
-              <i class="fa-solid fa-shoe-prints text-brand-500"></i> Talla de calzado (Medida Mexicana)
-            </label>
-            <input type="number" id="tallaCalzado" step="0.5" min="15" max="35" placeholder="Ej. 26.5" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all bg-white">
-            <p class="text-[11px] text-slate-500 mt-1.5">Expresado en centímetros (Medida MX).</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- PASO 4: DATOS FAMILIARES -->
-      <div id="paso-4" class="paso-contenido hidden space-y-6">
-        <div class="border-b border-slate-100 pb-4">
-          <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-            <i class="fa-solid fa-people-roof text-brand-600"></i> Datos Familiares
-          </h2>
-          <p class="text-xs text-slate-500">Registro opcional de cónyuge e hijos para beneficios de la empresa.</p>
-        </div>
-
-        <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-4">
-          <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-            <i class="fa-solid fa-heart text-rose-500"></i> Pareja o Cónyuge
-          </h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">Nombre Completo de Pareja</label>
-              <input type="text" id="pareja" placeholder="Nombre completo" class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 bg-white">
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1">Fecha de Nacimiento de Pareja</label>
-              <input type="date" id="fechaNacPareja" class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 bg-white">
-            </div>
-          </div>
-        </div>
-
-        <div class="p-4 rounded-xl border border-slate-200 bg-white space-y-4">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-semibold text-slate-700 mb-1 flex items-center gap-1.5">
-                <i class="fa-solid fa-child-reaching text-amber-500"></i> ¿Tiene Hijos?
-              </label>
-              <select id="tieneHijos" onchange="toggleSeccionHijos()" class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 bg-white">
-                <option value="No">No</option>
-                <option value="Sí">Sí</option>
-              </select>
-            </div>
-
-            <div id="divCantidadHijos" class="hidden">
-              <label class="block text-xs font-semibold text-slate-700 mb-1">¿Cuántos hijos tiene?</label>
-              <select id="cantidadHijos" onchange="actualizarCamposHijos()" class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 bg-white">
-                <option value="1">1 Hijo</option>
-                <option value="2">2 Hijos</option>
-                <option value="3">3 Hijos</option>
-                <option value="4">4 Hijos</option>
-                <option value="5">5 Hijos</option>
-                <option value="6">6 Hijos</option>
-                <option value="7">7 Hijos</option>
-                <option value="8">8 Hijos</option>
-                <option value="9">9 Hijos</option>
-                <option value="10">10 Hijos</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="max-h-80 overflow-y-auto custom-scrollbar space-y-3 pr-1 pt-2 hidden" id="contenedor-hijos">
-            <!-- Hijos generados dinámicamente -->
-          </div>
-        </div>
-      </div>
-
-      <div class="mt-8 pt-6 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3">
-        <button type="button" id="btnAnterior" onclick="pasoAnterior()" class="px-4 py-2.5 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all flex items-center gap-2 invisible">
-          <i class="fa-solid fa-arrow-left"></i> Anterior
-        </button>
-
-        <div class="flex items-center gap-2">
-          <button type="button" id="btnSiguiente" onclick="pasoSiguiente()" class="px-5 py-2.5 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-xl shadow-xs transition-all flex items-center gap-2">
-            Siguiente <i class="fa-solid fa-arrow-right"></i>
-          </button>
-
-          <button type="submit" id="btnEnviar" class="hidden px-6 py-2.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-sm hover:shadow transition-all flex items-center gap-2">
-            <i class="fa-solid fa-cloud-arrow-up"></i> Guardar en Google Drive
-          </button>
-        </div>
-      </div>
-    </form>
-
-    <!-- Modal Configuración Apps Script -->
-    <div id="modalConfig" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 z-50 hidden">
-      <div class="bg-white w-full max-w-md rounded-2xl p-6 shadow-2xl border border-slate-200">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
-          <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
-            <i class="fa-solid fa-link text-brand-600"></i> Endpoint de Apps Script
-          </h3>
-          <button type="button" onclick="toggleConfigModal()" class="text-slate-400 hover:text-slate-600 text-sm">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-        <p class="text-xs text-slate-500 mb-4">
-          Copia la URL de tu aplicación Web desde Google Apps Script (debe terminar en <code>/exec</code>) y pégala aquí:
-        </p>
-        <input type="text" id="inputScriptUrl" placeholder="https://script.google.com/macros/s/.../exec" class="w-full text-xs p-3 border border-slate-300 rounded-xl mb-4 focus:outline-none focus:border-brand-500 font-mono">
-        <div class="flex justify-end gap-2">
-          <button type="button" onclick="toggleConfigModal()" class="px-4 py-2 text-xs font-medium text-slate-600 hover:bg-slate-100 rounded-lg">Cancelar</button>
-          <button type="button" onclick="guardarNuevaUrl()" class="px-4 py-2 text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-lg shadow-xs">Guardar URL</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Notification Alert -->
-    <div id="statusAlert" class="mt-4 hidden p-4 rounded-xl text-xs font-semibold border text-center transition-all"></div>
-
-  </main>
-
-  <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500">
-    <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-      <p>© Sistema de Actualización de Datos. Registros directos a tu Hoja de Cálculo.</p>
-      <div class="flex items-center gap-3 text-slate-400">
-        <span class="flex items-center gap-1"><i class="fa-solid fa-shield-halved text-emerald-500"></i> Encriptación SSL</span>
-        <span>•</span>
-        <span>Google Apps Script Endpoint</span>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    let SCRIPT_URL = localStorage.getItem('CUSTOM_SCRIPT_URL') || 'https://script.google.com/macros/s/AKfycbyrqZUkeMlxqeixRHud50QEgo2z9yim7iO7J3t93cQwg2r0pv2dOS-Qo73SDWCVyVfp/exec';
-    let pasoActual = 1;
-
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('inputScriptUrl').value = SCRIPT_URL;
-    });
-
-    function toggleConfigModal() {
-      const modal = document.getElementById('modalConfig');
-      modal.classList.toggle('hidden');
-    }
-
-    function guardarNuevaUrl() {
-      const val = document.getElementById('inputScriptUrl').value.trim();
-      if (val) {
-        SCRIPT_URL = val;
-        localStorage.setItem('CUSTOM_SCRIPT_URL', val);
-        alert('URL de Apps Script guardada exitosamente.');
-        toggleConfigModal();
-      }
-    }
-
-    // BUSCAR CÓDIGO POSTAL EN GOOGLE SHEET
-    let cpTimer;
-    function buscarCP(cp) {
-      clearTimeout(cpTimer);
-      const cpClean = cp.trim();
-      const spinner = document.getElementById('cpSpinner');
-      const inputCiudad = document.getElementById('ciudad');
-      const contenedorCol = document.getElementById('contenedorColonia');
-      const msgStatus = document.getElementById('cpStatusMsg');
-
-      if (cpClean.length !== 5) {
-        spinner.classList.add('hidden');
-        msgStatus.innerHTML = '';
-        return;
-      }
-
-      spinner.classList.remove('hidden');
-      msgStatus.className = 'text-[11px] text-blue-600 font-medium mt-1 animate-pulse';
-      msgStatus.innerHTML = '<i class="fa-solid fa-spinner animate-spin mr-1"></i> Consultando Hoja de Google Drive...';
-
-      cpTimer = setTimeout(() => {
-        fetch(`${SCRIPT_URL}?cp=${encodeURIComponent(cpClean)}`)
-          .then(res => res.json())
-          .then(data => {
-            spinner.classList.add('hidden');
-            if (data.status === 'success') {
-              if (data.ciudad) inputCiudad.value = data.ciudad;
-
-              if (data.colonias && data.colonias.length > 0) {
-                let optionsHtml = data.colonias.map(c => `<option value="${c}">${c}</option>`).join('');
-                contenedorCol.innerHTML = `
-                  <label class="block text-xs font-semibold text-slate-700 mb-1">
-                    Colonia o Fraccionamiento <span class="text-[10px] text-emerald-600 font-normal">(${data.colonias.length} encontradas en Sheet)</span>
-                  </label>
-                  <select id="colonia" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-emerald-400 focus:outline-none focus:border-brand-500 bg-white shadow-xs">
-                    <option value="">-- Seleccionar Colonia --</option>
-                    ${optionsHtml}
-                  </select>
-                `;
-                msgStatus.className = 'text-[11px] text-emerald-600 font-medium mt-1';
-                msgStatus.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> C.P. ${cpClean} verificado. Elige tu colonia del menú.`;
-              } else {
-                restaurarInputColonia();
-                msgStatus.className = 'text-[11px] text-amber-600 font-medium mt-1';
-                msgStatus.innerHTML = '<i class="fa-solid fa-circle-info mr-1"></i> C.P. encontrado pero sin lista de colonias. Escríbela manualmente.';
-              }
-            } else {
-              restaurarInputColonia();
-              msgStatus.className = 'text-[11px] text-amber-600 font-medium mt-1';
-              msgStatus.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1"></i> C.P. no encontrado en el catálogo. Puedes escribir colonia y ciudad manualmente.';
-            }
-          })
-          .catch(err => {
-            spinner.classList.add('hidden');
-            restaurarInputColonia();
-            msgStatus.className = 'text-[11px] text-slate-500 font-medium mt-1';
-            msgStatus.innerHTML = '<i class="fa-solid fa-circle-info mr-1"></i> Puedes escribir tu colonia manualmente.';
-          });
-      }, 350);
-    }
-
-    function restaurarInputColonia() {
-      const contenedorCol = document.getElementById('contenedorColonia');
-      contenedorCol.innerHTML = `
-        <label class="block text-xs font-semibold text-slate-700 mb-1">Colonia o Fraccionamiento</label>
-        <input type="text" id="colonia" placeholder="Ej. Centro" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 transition-all">
-      `;
-    }
-
-    // MANEJO DINÁMICO DE HIJOS
-    function toggleSeccionHijos() {
-      const tiene = document.getElementById('tieneHijos').value;
-      const divCant = document.getElementById('divCantidadHijos');
-      const contHijos = document.getElementById('contenedor-hijos');
-
-      if (tiene === 'Sí') {
-        divCant.classList.remove('hidden');
-        contHijos.classList.remove('hidden');
-        actualizarCamposHijos();
-      } else {
-        divCant.classList.add('hidden');
-        contHijos.classList.add('hidden');
-        contHijos.innerHTML = '';
-      }
-    }
-
-    function actualizarCamposHijos() {
-      const num = parseInt(document.getElementById('cantidadHijos').value) || 0;
-      const container = document.getElementById('contenedor-hijos');
-      let html = '';
-
-      for (let i = 1; i <= num; i++) {
-        html += `
-          <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/50 grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
-            <div>
-              <label class="block text-[11px] font-semibold text-slate-600 mb-1">Nombre de Hijo ${i}</label>
-              <input type="text" id="hijo${i}" placeholder="Nombre completo del hijo ${i}" class="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-300 focus:outline-none focus:border-brand-500 bg-white">
-            </div>
-            <div>
-              <label class="block text-[11px] font-semibold text-slate-600 mb-1">Fecha Nac. Hijo ${i}</label>
-              <input type="date" id="fechaNacHijo${i}" class="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-300 focus:outline-none focus:border-brand-500 bg-white">
-            </div>
-          </div>
-        `;
-      }
-      container.innerHTML = html;
-    }
-
-    // NAVEGACIÓN ENTRE PASOS
-    function cambiarPaso(paso) {
-      if (paso > pasoActual && !validarPasoActual()) return;
-
-      pasoActual = paso;
-
-      document.querySelectorAll('.paso-contenido').forEach(el => el.classList.add('hidden'));
-      document.getElementById(`paso-${paso}`).classList.remove('hidden');
-
-      document.querySelectorAll('.tab-btn').forEach((btn, index) => {
-        const num = index + 1;
-        if (num === paso) {
-          btn.className = "tab-btn px-3 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all bg-brand-600 text-white font-semibold shadow-xs";
-          btn.querySelector('span:first-child').className = "w-5 h-5 rounded-full border border-white/40 flex items-center justify-center text-[10px]";
+    fetch(SCRIPT_URL + '?cp=' + cp, { signal: abortController.signal })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          ciudadInput.value = data.ciudad || 'No encontrada';
+          
+          if (data.colonias && data.colonias.length > 0) {
+            coloniaSelect.innerHTML = '<option value="">Selecciona tu colonia</option>';
+            data.colonias.forEach(c => {
+              let opt = document.createElement('option');
+              opt.value = c;
+              opt.innerText = c;
+              coloniaSelect.appendChild(opt);
+            });
+            containerSelect.classList.remove('hidden');
+            containerInput.classList.add('hidden');
+            cpStatus.style.color = 'green';
+            cpStatus.innerText = '✓ Encontrado';
+          } else {
+            cpStatus.style.color = '#d97706';
+            cpStatus.innerText = 'C.P. sin colonias registradas. Escríbela:';
+            ciudadInput.value = '';
+            containerSelect.classList.add('hidden');
+            containerInput.classList.remove('hidden');
+          }
         } else {
-          btn.className = "tab-btn px-3 py-2.5 rounded-xl flex items-center justify-center gap-2 transition-all hover:bg-slate-100 text-slate-600";
-          btn.querySelector('span:first-child').className = "w-5 h-5 rounded-full border border-slate-300 flex items-center justify-center text-[10px]";
+          cpStatus.style.color = 'red';
+          cpStatus.innerText = 'No encontrado. Ingresa manualmente.';
+          ciudadInput.value = '';
+          containerSelect.classList.add('hidden');
+          containerInput.classList.remove('hidden');
         }
-      });
-
-      const btnAnt = document.getElementById('btnAnterior');
-      const btnSig = document.getElementById('btnSiguiente');
-      const btnEnv = document.getElementById('btnEnviar');
-
-      btnAnt.style.visibility = paso === 1 ? 'hidden' : 'visible';
-
-      if (paso === 4) {
-        btnSig.classList.add('hidden');
-        btnEnv.classList.remove('hidden');
-      } else {
-        btnSig.classList.remove('hidden');
-        btnEnv.classList.add('hidden');
-      }
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function pasoSiguiente() {
-      if (pasoActual < 4) cambiarPaso(pasoActual + 1);
-    }
-
-    function pasoAnterior() {
-      if (pasoActual > 1) cambiarPaso(pasoActual - 1);
-    }
-
-    function validarPasoActual() {
-      const inputs = document.getElementById(`paso-${pasoActual}`).querySelectorAll('[required]');
-      for (let input of inputs) {
-        if (!input.value.trim()) {
-          input.reportValidity();
-          return false;
-        }
-      }
-      return true;
-    }
-
-    function llenarDatosPrueba() {
-      document.getElementById('nombre').value = 'Roberto';
-      document.getElementById('segundoNombre').value = 'Alejandro';
-      document.getElementById('apellidoPaterno').value = 'Martínez';
-      document.getElementById('apellidoMaterno').value = 'Sánchez';
-      document.getElementById('estadoCivil').value = 'Casado(a)';
-      document.getElementById('codigoPostal').value = '25000';
-      buscarCP('25000');
-      document.getElementById('calle').value = 'Av. Universidad';
-      document.getElementById('numeroDomicilio').value = '845';
-      document.getElementById('telefonoWhatsapp').value = '8441239876';
-      document.getElementById('correo').value = 'roberto.martinez@ejemplo.com';
-      document.getElementById('nombreContactoEmergencia').value = 'Laura Sánchez';
-      document.getElementById('telefonoContactoEmergencia').value = '8449871234';
-      document.getElementById('tallaPlayera').value = 'L';
-      document.getElementById('tallaCalzado').value = '27.5';
-      document.getElementById('pareja').value = 'Laura Sánchez Flores';
-      document.getElementById('fechaNacPareja').value = '1988-05-14';
-
-      document.getElementById('tieneHijos').value = 'Sí';
-      toggleSeccionHijos();
-      document.getElementById('cantidadHijos').value = '2';
-      actualizarCamposHijos();
-
-      setTimeout(() => {
-        if (document.getElementById('hijo1')) document.getElementById('hijo1').value = 'Mateo Martínez Sánchez';
-        if (document.getElementById('fechaNacHijo1')) document.getElementById('fechaNacHijo1').value = '2015-08-20';
-        if (document.getElementById('hijo2')) document.getElementById('hijo2').value = 'Sofia Martínez Sánchez';
-        if (document.getElementById('fechaNacHijo2')) document.getElementById('fechaNacHijo2').value = '2018-11-03';
-      }, 100);
-
-      const status = document.getElementById('statusAlert');
-      status.className = 'mt-4 p-3 rounded-xl text-xs font-medium border bg-blue-50 text-blue-800 border-blue-200 block text-center';
-      status.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles mr-1"></i> ¡Datos demo cargados!';
-    }
-
-    document.getElementById('encuestaForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      const status = document.getElementById('statusAlert');
-      const btnEnv = document.getElementById('btnEnviar');
-
-      btnEnv.disabled = true;
-      btnEnv.innerHTML = '<i class="fa-solid fa-circle-notch animate-spin"></i> Enviando...';
-
-      status.className = 'mt-4 p-4 rounded-xl text-xs font-medium border bg-blue-50 text-blue-800 border-blue-200 block text-center';
-      status.innerHTML = '<i class="fa-solid fa-spinner animate-spin mr-1"></i> Enviando registro a tu Google Sheet...';
-
-      const payload = {
-        nombre: document.getElementById('nombre').value,
-        segundoNombre: document.getElementById('segundoNombre').value,
-        apellidoPaterno: document.getElementById('apellidoPaterno').value,
-        apellidoMaterno: document.getElementById('apellidoMaterno').value,
-        estadoCivil: document.getElementById('estadoCivil').value,
-        calle: document.getElementById('calle').value,
-        numeroDomicilio: document.getElementById('numeroDomicilio').value,
-        colonia: document.getElementById('colonia') ? document.getElementById('colonia').value : '',
-        codigoPostal: document.getElementById('codigoPostal').value,
-        ciudad: document.getElementById('ciudad').value,
-        telefonoWhatsapp: document.getElementById('telefonoWhatsapp').value,
-        correo: document.getElementById('correo').value,
-        nombreContactoEmergencia: document.getElementById('nombreContactoEmergencia').value,
-        telefonoContactoEmergencia: document.getElementById('telefonoContactoEmergencia').value,
-        tallaPlayera: document.getElementById('tallaPlayera').value,
-        tallaCalzado: document.getElementById('tallaCalzado').value,
-        pareja: document.getElementById('pareja').value,
-        fechaNacPareja: document.getElementById('fechaNacPareja').value
-      };
-
-      for (let i = 1; i <= 10; i++) {
-        const elHijo = document.getElementById(`hijo${i}`);
-        const elFecha = document.getElementById(`fechaNacHijo${i}`);
-        payload[`hijo${i}`] = elHijo ? elHijo.value : '';
-        payload[`fechaNacHijo${i}`] = elFecha ? elFecha.value : '';
-      }
-
-      fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify(payload)
-      })
-      .then(() => {
-        status.className = 'mt-4 p-4 rounded-xl text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200 block text-center';
-        status.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 text-sm mr-1"></i> ¡Registro guardado exitosamente en Google Drive!';
-        
-        document.getElementById('encuestaForm').reset();
-        toggleSeccionHijos();
-        btnEnv.disabled = false;
-        btnEnv.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Guardar en Google Drive';
-        
-        setTimeout(() => cambiarPaso(1), 3500);
       })
       .catch(err => {
-        status.className = 'mt-4 p-4 rounded-xl text-xs font-semibold border bg-rose-50 text-rose-800 border-rose-200 block text-center';
-        status.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1"></i> Error al conectar con Google Apps Script. Reintenta por favor.';
-        btnEnv.disabled = false;
-        btnEnv.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Guardar en Google Drive';
+        if (err.name !== 'AbortError') {
+          cpStatus.style.color = 'red';
+          cpStatus.innerText = 'Error de conexión. Ingresa manualmente.';
+          ciudadInput.value = '';
+          containerSelect.classList.add('hidden');
+          containerInput.classList.remove('hidden');
+        }
       });
+  }
+
+  // --- LÓGICA DINÁMICA DE HIJOS ---
+  const tieneHijos = document.getElementById('tieneHijos');
+  const seccionCantidad = document.getElementById('seccionCantidadHijos');
+  const cantidadHijos = document.getElementById('cantidadHijos');
+  const contenedorHijos = document.getElementById('contenedorHijos');
+
+  tieneHijos.addEventListener('change', function() {
+    if (this.value === 'Si') {
+      seccionCantidad.classList.remove('hidden');
+    } else {
+      seccionCantidad.classList.add('hidden');
+      cantidadHijos.value = "0";
+      contenedorHijos.innerHTML = '';
+    }
+  });
+
+  cantidadHijos.addEventListener('change', function() {
+    let cantidad = parseInt(this.value);
+    contenedorHijos.innerHTML = ''; 
+    for(let i = 1; i <= cantidad; i++) {
+      contenedorHijos.innerHTML += `
+        <div class="form-group">
+          <label style="color:#2563eb">Nombre Hijo ${i}</label>
+          <input type="text" id="hijo${i}" required>
+        </div>
+        <div class="form-group">
+          <label style="color:#2563eb">Fecha Nac. Hijo ${i}</label>
+          <input type="date" id="fechaNacHijo${i}" required>
+        </div>
+      `;
+    }
+  });
+
+  // --- LÓGICA DE ENVÍO DEL FORMULARIO ---
+  document.getElementById('datosForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('btnEnviar');
+    const status = document.getElementById('status');
+    
+    btn.disabled = true;
+    status.style.color = '#2563eb';
+    status.style.backgroundColor = '#e0f2fe';
+    status.innerText = 'Guardando información de forma segura...';
+
+    // Determinar qué colonia enviar (Select o Input)
+    let coloniaFinal = "";
+    if (containerInput.classList.contains('hidden')) {
+      coloniaFinal = coloniaSelect.value;
+    } else {
+      coloniaFinal = coloniaInput.value;
+    }
+
+    const payload = {
+      nombre: document.getElementById('nombre').value,
+      segundoNombre: document.getElementById('segundoNombre').value,
+      apellidoPaterno: document.getElementById('apellidoPaterno').value,
+      apellidoMaterno: document.getElementById('apellidoMaterno').value,
+      estadoCivil: document.getElementById('estadoCivil').value,
+      codigoPostal: document.getElementById('codigoPostal').value,
+      ciudad: document.getElementById('ciudad').value,
+      colonia: coloniaFinal,
+      calle: document.getElementById('calle').value,
+      numeroDomicilio: document.getElementById('numeroDomicilio').value,
+      telefonoWhatsapp: document.getElementById('telefonoWhatsapp').value,
+      correo: document.getElementById('correo').value,
+      nombreContactoEmergencia: document.getElementById('nombreContactoEmergencia').value,
+      telefonoContactoEmergencia: document.getElementById('telefonoContactoEmergencia').value,
+      tallaPlayera: document.getElementById('tallaPlayera').value,
+      tallaCalzado: document.getElementById('tallaCalzado').value,
+      pareja: document.getElementById('pareja').value,
+      fechaNacPareja: document.getElementById('fechaNacPareja').value
+    };
+
+    // Recolectar datos de hasta 10 hijos de forma segura
+    for(let i = 1; i <= 10; i++) {
+      let campoHijo = document.getElementById(`hijo${i}`);
+      let campoFecha = document.getElementById(`fechaNacHijo${i}`);
+      payload[`hijo${i}`] = campoHijo ? campoHijo.value : "";
+      payload[`fechaNacHijo${i}`] = campoFecha ? campoFecha.value : "";
+    }
+
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload)
+    })
+    .then(() => {
+      status.style.color = '#166534';
+      status.style.backgroundColor = '#dcfce3';
+      status.innerText = '¡Registro completado! Tus datos han sido guardados.';
+      document.getElementById('datosForm').reset();
+      resetCPFields();
+      seccionCantidad.classList.add('hidden');
+      contenedorHijos.innerHTML = '';
+      btn.disabled = false;
+      setTimeout(() => { status.innerText = ''; status.style.backgroundColor = 'transparent'; }, 5000);
+    })
+    .catch(error => {
+      status.style.color = '#991b1b';
+      status.style.backgroundColor = '#fee2e2';
+      status.innerText = 'Ocurrió un error al guardar. Verifica tu conexión e intenta de nuevo.';
+      btn.disabled = false;
     });
-  </script>
+  });
+
+  // --- FUNCIÓN DEMO PARA PRUEBAS RÁPIDAS ---
+  document.getElementById('btnDemo').addEventListener('click', function() {
+    document.getElementById('nombre').value = 'Juan';
+    document.getElementById('apellidoPaterno').value = 'Pérez';
+    document.getElementById('telefonoWhatsapp').value = '5551234567';
+    document.getElementById('codigoPostal').value = '25000';
+    
+    // Disparar búsqueda C.P.
+    cpInput.dispatchEvent(new Event('input'));
+    
+    document.getElementById('calle').value = 'Av. Reforma';
+    document.getElementById('numeroDomicilio').value = '100';
+    document.getElementById('estadoCivil').value = 'Casado(a)';
+    
+    tieneHijos.value = 'Si';
+    tieneHijos.dispatchEvent(new Event('change'));
+    
+    cantidadHijos.value = '2';
+    cantidadHijos.dispatchEvent(new Event('change'));
+    
+    setTimeout(() => {
+      let h1 = document.getElementById('hijo1');
+      let f1 = document.getElementById('fechaNacHijo1');
+      let h2 = document.getElementById('hijo2');
+      let f2 = document.getElementById('fechaNacHijo2');
+      
+      if(h1) h1.value = 'Pablito Pérez';
+      if(f1) f1.value = '2015-05-10';
+      if(h2) h2.value = 'María Pérez';
+      if(f2) f2.value = '2018-08-20';
+    }, 100);
+  });
+</script>
+
 </body>
 </html>
