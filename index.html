@@ -1,396 +1,248 @@
+Tienes toda la razón, a veces lo más sencillo es lo que mejor funciona. Una disculpa por haber agregado el "2024", ya está completamente eliminado.
+
+Entiendo perfecto lo que buscas: el diseño limpio, centrado y directo de tu ejemplo, pero conservando toda la "magia" que ya programamos (el número de empleado, el autocompletado del código postal y la lógica de los hijos acomodados por renglón).
+
+Para que la encuesta no se vea kilométrica al tener tantos campos, ajusté el ancho máximo de la tarjeta (`max-width: 800px`), pero utilicé **exactamente tus mismos colores, fuentes (Arial), sombras, botones y la insignia azul** de tu código original.
+
+Aquí tienes el archivo `index.html` definitivo, limpio y funcional:
+
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BIC | Portal de Actualización de Datos</title>
-  
-  <!-- Tipografía Premium: Inter -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+  <title>Actualización de Datos</title>
   <style>
-    /* VARIABLES CORPORATIVAS BIC & FLUENT DESIGN */
-    :root {
-      --bic-yellow: #FFD100;
-      --bic-yellow-hover: #F2C700;
-      --bic-blue: #003B75;
-      --bic-blue-hover: #002B56;
-      --bg-body: #F7F8FA;
-      --bg-card: #FFFFFF;
-      --text-main: #1F2937;
-      --text-muted: #6B7280;
-      --border-light: #E5E7EB;
-      --focus-ring: rgba(0, 59, 117, 0.15);
-      --radius-card: 16px;
-      --radius-input: 8px;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
-      --shadow-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
-      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
-      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-      background-color: var(--bg-body);
-      color: var(--text-main);
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-      padding-bottom: 60px;
-    }
-
-    /* NAVBAR CORPORATIVO */
-    .app-header {
-      background-color: var(--bg-card);
-      border-bottom: 1px solid var(--border-light);
-      padding: 16px 24px;
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f9;
       display: flex;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: var(--shadow-sm);
-    }
-    .bic-logo {
-      font-size: 1.5rem;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      color: var(--bic-blue);
-      margin-right: 12px;
-      position: relative;
-    }
-    .bic-logo::after {
-      content: '';
-      position: absolute;
-      bottom: 2px;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background-color: var(--bic-yellow);
-      border-radius: 2px;
-      z-index: -1;
-    }
-    .header-divider { width: 1px; height: 24px; background-color: var(--border-light); margin: 0 16px; }
-    .header-title { font-weight: 500; color: var(--text-muted); font-size: 0.95rem; }
-
-    /* CONTENEDOR PRINCIPAL */
-    .container { max-width: 840px; margin: 40px auto; padding: 0 20px; }
-
-    .page-header { margin-bottom: 32px; }
-    .page-title { font-size: 1.75rem; font-weight: 700; color: var(--bic-blue); margin-bottom: 8px; }
-    .page-subtitle { color: var(--text-muted); font-size: 1rem; }
-
-    /* TARJETAS (CARDS) FLUENT DESIGN */
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-light);
-      border-radius: var(--radius-card);
-      padding: 32px;
-      margin-bottom: 24px;
-      box-shadow: var(--shadow-md);
-      transition: var(--transition);
-    }
-    .card:hover { box-shadow: var(--shadow-hover); }
-    
-    .card-title {
-      font-size: 1.15rem;
-      font-weight: 600;
-      color: var(--bic-blue);
-      margin-bottom: 24px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--border-light);
-      display: flex;
-      align-items: center;
-    }
-
-    /* GRID Y CAMPOS (INPUTS) */
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
-    
-    .input-group { display: flex; flex-direction: column; position: relative; }
-    
-    .input-label {
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-      transition: var(--transition);
-    }
-
-    .form-control {
-      background-color: #ffffff;
-      border: 1px solid #D1D5DB;
-      border-radius: var(--radius-input);
-      padding: 12px 14px;
-      font-size: 0.95rem;
-      color: var(--text-main);
-      transition: var(--transition);
-      font-family: inherit;
-    }
-    
-    .form-control:focus {
-      outline: none;
-      border-color: var(--bic-blue);
-      box-shadow: 0 0 0 4px var(--focus-ring);
-    }
-    .form-control:focus + .input-label,
-    .input-group:focus-within .input-label {
-      color: var(--bic-blue);
-      font-weight: 600;
-    }
-
-    select.form-control { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; background-size: 16px; padding-right: 40px; }
-
-    /* ESTILOS DE HIJOS Y SEPARADORES */
-    .child-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 20px;
-      padding: 20px;
-      margin-bottom: 16px;
-      background-color: #F9FAFB;
-      border: 1px solid var(--border-light);
-      border-radius: var(--radius-input);
-    }
-
-    /* BOTONES CORPORATIVOS */
-    .btn {
-      display: inline-flex;
-      align-items: center;
       justify-content: center;
-      padding: 14px 28px;
-      font-size: 1rem;
-      font-weight: 600;
-      border-radius: var(--radius-btn);
-      border: none;
-      cursor: pointer;
-      transition: var(--transition);
+      padding: 20px;
+      margin: 0;
+    }
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      max-width: 800px; /* Ampliado para acomodar los campos a dos columnas */
       width: 100%;
-      margin-top: 16px;
     }
-    .btn-primary {
-      background-color: var(--bic-yellow);
-      color: var(--bic-blue);
+    h2 { color: #333; margin-top: 0; }
+    h3 {
+      color: #333;
+      font-size: 1.1rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 8px;
+      margin-top: 25px;
+      margin-bottom: 15px;
     }
-    .btn-primary:hover {
-      background-color: var(--bic-yellow-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(255, 209, 0, 0.3);
+    .badge-anon {
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      display: inline-block;
+      margin-bottom: 20px;
+      font-weight: bold;
     }
-    .btn-primary:active { transform: translateY(0); }
-    .btn:disabled { background-color: var(--border-light); color: var(--text-muted); cursor: not-allowed; box-shadow: none; transform: none; }
-
-    /* ESTADOS Y UTILIDADES */
-    .hidden { display: none !important; }
-    .status-text { font-size: 0.8rem; font-weight: 500; margin-top: 6px; }
-    
-    #status-overlay {
-      position: fixed; top: 24px; right: 24px; padding: 16px 24px; border-radius: 8px;
-      font-weight: 500; box-shadow: var(--shadow-hover); z-index: 1000;
-      transform: translateX(150%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
     }
-    #status-overlay.show { transform: translateX(0); }
-    .status-success { background-color: #10B981; color: white; }
-    .status-error { background-color: #EF4444; color: white; }
-    .status-loading { background-color: var(--bic-blue); color: white; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; font-size: 0.9rem; }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #2563eb;
+    }
+    button {
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    button:hover { background-color: #1d4ed8; }
+    button:disabled { background-color: #94a3b8; cursor: not-allowed; }
+    #status { margin-top: 15px; font-weight: bold; text-align: center; }
+    .hidden { display: none; }
+    #cp-status { font-size: 0.8rem; margin-top: 5px; font-weight: normal; }
   </style>
 </head>
 <body>
 
-  <!-- NAVBAR -->
-  <header class="app-header">
-    <div class="bic-logo">BIC</div>
-    <div class="header-divider"></div>
-    <div class="header-title">Portal de Actualización de Empleados</div>
-  </header>
+<div class="card">
+  <h2>Actualización de Datos</h2>
+  <div class="badge-anon">🔒 Formulario Seguro sin Inicio de Sesión Requerido</div>
 
-  <div class="container">
-    <div class="page-header">
-      <h1 class="page-title">Actualización de Datos 2024</h1>
-      <p class="page-subtitle">Por favor, completa la siguiente información. Tus datos están cifrados y seguros.</p>
+  <form id="datosForm">
+    
+    <h3>Datos Personales</h3>
+    <div class="grid">
+      <div class="form-group">
+        <label>Número de Empleado *</label>
+        <input type="text" id="numeroEmpleado" required>
+      </div>
+      <div class="form-group">
+        <label>Nombre *</label>
+        <input type="text" id="nombre" required>
+      </div>
+      <div class="form-group">
+        <label>Segundo Nombre</label>
+        <input type="text" id="segundoNombre">
+      </div>
+      <div class="form-group">
+        <label>Apellido Paterno *</label>
+        <input type="text" id="apellidoPaterno" required>
+      </div>
+      <div class="form-group">
+        <label>Apellido Materno</label>
+        <input type="text" id="apellidoMaterno">
+      </div>
+      <div class="form-group">
+        <label>Estado Civil</label>
+        <select id="estadoCivil">
+          <option value="">Seleccione...</option>
+          <option value="Soltero(a)">Soltero(a)</option>
+          <option value="Casado(a)">Casado(a)</option>
+          <option value="Unión Libre">Unión Libre</option>
+          <option value="Divorciado(a)">Divorciado(a)</option>
+          <option value="Viudo(a)">Viudo(a)</option>
+        </select>
+      </div>
     </div>
 
-    <form id="datosForm">
+    <h3>Domicilio y Contacto</h3>
+    <div class="grid">
+      <div class="form-group">
+        <label>Código Postal *</label>
+        <input type="text" id="codigoPostal" maxlength="5" required>
+        <div id="cp-status"></div>
+      </div>
+      <div class="form-group">
+        <label>Ciudad</label>
+        <input type="text" id="ciudad" readonly style="background-color: #f9f9f9;">
+      </div>
       
-      <!-- TARJETA 1: DATOS PERSONALES -->
-      <div class="card">
-        <h3 class="card-title">1. Datos Personales</h3>
-        <div class="grid">
-          <div class="input-group">
-            <label class="input-label">Número de Empleado *</label>
-            <input type="text" id="numeroEmpleado" class="form-control" required>
-          </div>
-          <div class="input-group">
-            <label class="input-label">Nombre *</label>
-            <input type="text" id="nombre" class="form-control" required>
-          </div>
-          <div class="input-group">
-            <label class="input-label">Segundo Nombre</label>
-            <input type="text" id="segundoNombre" class="form-control">
-          </div>
-          <div class="input-group">
-            <label class="input-label">Apellido Paterno *</label>
-            <input type="text" id="apellidoPaterno" class="form-control" required>
-          </div>
-          <div class="input-group">
-            <label class="input-label">Apellido Materno</label>
-            <input type="text" id="apellidoMaterno" class="form-control">
-          </div>
-          <div class="input-group">
-            <label class="input-label">Estado Civil</label>
-            <select id="estadoCivil" class="form-control">
-              <option value="">Seleccione...</option>
-              <option value="Soltero(a)">Soltero(a)</option>
-              <option value="Casado(a)">Casado(a)</option>
-              <option value="Unión Libre">Unión Libre</option>
-              <option value="Divorciado(a)">Divorciado(a)</option>
-              <option value="Viudo(a)">Viudo(a)</option>
-            </select>
-          </div>
-        </div>
+      <div class="form-group" id="container-colonia-select">
+        <label>Colonia o Fraccionamiento *</label>
+        <select id="colonia-select">
+          <option value="">Primero ingresa un C.P.</option>
+        </select>
+      </div>
+      <div class="form-group hidden" id="container-colonia-input">
+        <label>Colonia o Fraccionamiento *</label>
+        <input type="text" id="colonia-input">
       </div>
 
-      <!-- TARJETA 2: DOMICILIO -->
-      <div class="card">
-        <h3 class="card-title">2. Domicilio y Contacto</h3>
-        <div class="grid">
-          <div class="input-group">
-            <label class="input-label">Código Postal *</label>
-            <input type="text" id="codigoPostal" class="form-control" maxlength="5" required>
-            <div id="cp-status" class="status-text"></div>
-          </div>
-          <div class="input-group">
-            <label class="input-label">Ciudad</label>
-            <input type="text" id="ciudad" class="form-control" readonly style="background-color: #F3F4F6;">
-          </div>
-          
-          <div class="input-group" id="container-colonia-select">
-            <label class="input-label">Colonia o Fraccionamiento *</label>
-            <select id="colonia-select" class="form-control">
-              <option value="">Ingresa un C.P. primero</option>
-            </select>
-          </div>
-          <div class="input-group hidden" id="container-colonia-input">
-            <label class="input-label">Colonia o Fraccionamiento *</label>
-            <input type="text" id="colonia-input" class="form-control">
-          </div>
-
-          <div class="input-group">
-            <label class="input-label">Calle</label>
-            <input type="text" id="calle" class="form-control">
-          </div>
-          <div class="input-group">
-            <label class="input-label">Número</label>
-            <input type="text" id="numeroDomicilio" class="form-control">
-          </div>
-          <div class="input-group">
-            <label class="input-label">Teléfono (WhatsApp) *</label>
-            <input type="tel" id="telefonoWhatsapp" class="form-control" required>
-          </div>
-          <div class="input-group">
-            <label class="input-label">Correo Electrónico</label>
-            <input type="email" id="correo" class="form-control">
-          </div>
-        </div>
+      <div class="form-group">
+        <label>Calle</label>
+        <input type="text" id="calle">
       </div>
-
-      <!-- TARJETA 3: OTROS DATOS -->
-      <div class="card">
-        <h3 class="card-title">3. Información Adicional</h3>
-        <div class="grid">
-          <div class="input-group">
-            <label class="input-label">Contacto de Emergencia</label>
-            <input type="text" id="nombreContactoEmergencia" class="form-control">
-          </div>
-          <div class="input-group">
-            <label class="input-label">Teléfono Emergencia</label>
-            <input type="tel" id="telefonoContactoEmergencia" class="form-control">
-          </div>
-          <div class="input-group">
-            <label class="input-label">Talla de Playera</label>
-            <select id="tallaPlayera" class="form-control">
-              <option value="">Seleccione...</option>
-              <option value="XS">XS</option>
-              <option value="S">S</option>
-              <option value="M">M</option>
-              <option value="L">L</option>
-              <option value="XL">XL</option>
-              <option value="2XL">2XL</option>
-            </select>
-          </div>
-          <div class="input-group">
-            <label class="input-label">Talla de Calzado (MX)</label>
-            <input type="number" step="0.5" id="tallaCalzado" class="form-control">
-          </div>
-        </div>
+      <div class="form-group">
+        <label>Número</label>
+        <input type="text" id="numeroDomicilio">
       </div>
-
-      <!-- TARJETA 4: FAMILIA -->
-      <div class="card">
-        <h3 class="card-title">4. Familia y Dependientes</h3>
-        <div class="grid" style="margin-bottom: 24px;">
-          <div class="input-group">
-            <label class="input-label">Nombre de Pareja</label>
-            <input type="text" id="pareja" class="form-control">
-          </div>
-          <div class="input-group">
-            <label class="input-label">Fecha Nacimiento Pareja</label>
-            <input type="date" id="fechaNacPareja" class="form-control">
-          </div>
-        </div>
-
-        <hr style="border: 0; border-top: 1px solid var(--border-light); margin: 24px 0;">
-
-        <div class="grid">
-          <div class="input-group">
-            <label class="input-label">¿Tiene hijos?</label>
-            <select id="tieneHijos" class="form-control">
-              <option value="No">No</option>
-              <option value="Si">Sí</option>
-            </select>
-          </div>
-          <div class="input-group hidden" id="seccionCantidadHijos">
-            <label class="input-label">¿Cuántos hijos tiene?</label>
-            <select id="cantidadHijos" class="form-control">
-              <option value="0">Seleccione...</option>
-              <option value="1">1</option><option value="2">2</option>
-              <option value="3">3</option><option value="4">4</option>
-              <option value="5">5</option><option value="6">6</option>
-              <option value="7">7</option><option value="8">8</option>
-              <option value="9">9</option><option value="10">10</option>
-            </select>
-          </div>
-        </div>
-        
-        <!-- Contenedor premium para los hijos -->
-        <div id="contenedorHijos" style="margin-top: 20px;"></div>
+      <div class="form-group">
+        <label>Teléfono (WhatsApp) *</label>
+        <input type="tel" id="telefonoWhatsapp" required>
       </div>
+      <div class="form-group">
+        <label>Correo Electrónico</label>
+        <input type="email" id="correo">
+      </div>
+    </div>
 
-      <button type="submit" id="btnEnviar" class="btn btn-primary">
-        Guardar Registro de Datos
-      </button>
-    </form>
-  </div>
+    <h3>Contacto de Emergencia y Tallas</h3>
+    <div class="grid">
+      <div class="form-group">
+        <label>Nombre de Contacto</label>
+        <input type="text" id="nombreContactoEmergencia">
+      </div>
+      <div class="form-group">
+        <label>Teléfono de Contacto (WhatsApp)</label>
+        <input type="tel" id="telefonoContactoEmergencia">
+      </div>
+      <div class="form-group">
+        <label>Talla de Playera</label>
+        <select id="tallaPlayera">
+          <option value="">Seleccione...</option>
+          <option value="XS">XS</option>
+          <option value="S">S</option>
+          <option value="M">M</option>
+          <option value="L">L</option>
+          <option value="XL">XL</option>
+          <option value="2XL">2XL</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Talla de Calzado (Mexicana)</label>
+        <input type="number" step="0.5" id="tallaCalzado">
+      </div>
+    </div>
 
-  <!-- Notificación Flotante (Toast) -->
-  <div id="status-overlay"></div>
+    <h3>Información Familiar</h3>
+    <div class="grid">
+      <div class="form-group">
+        <label>Nombre de Pareja</label>
+        <input type="text" id="pareja">
+      </div>
+      <div class="form-group">
+        <label>Fecha Nacimiento Pareja</label>
+        <input type="date" id="fechaNacPareja">
+      </div>
+      <div class="form-group">
+        <label>¿Tiene hijos?</label>
+        <select id="tieneHijos">
+          <option value="No">No</option>
+          <option value="Si">Sí</option>
+        </select>
+      </div>
+      <div class="form-group hidden" id="seccionCantidadHijos">
+        <label>¿Cuántos hijos tiene?</label>
+        <select id="cantidadHijos">
+          <option value="0">Seleccione...</option>
+          <option value="1">1</option><option value="2">2</option>
+          <option value="3">3</option><option value="4">4</option>
+          <option value="5">5</option><option value="6">6</option>
+          <option value="7">7</option><option value="8">8</option>
+          <option value="9">9</option><option value="10">10</option>
+        </select>
+      </div>
+    </div>
+    
+    <!-- Contenedor para mostrar hijos en filas exactas -->
+    <div id="contenedorHijos" style="margin-top: 10px;"></div>
+
+    <button type="submit" id="btnEnviar">Guardar Registro</button>
+  </form>
+
+  <div id="status"></div>
+</div>
 
 <script>
+  // URL DE GOOGLE APPS SCRIPT
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwZUR9-I0_ghSBITOFlIACKwkKtd5YqG22GCoDV_qfaNICl64Jj7zY2NH03GxXecHY7/exec';
 
-  // UI Toast Function
-  const toast = document.getElementById('status-overlay');
-  function showToast(message, type) {
-    toast.className = `show status-${type}`;
-    toast.innerText = message;
-    if(type !== 'loading') {
-      setTimeout(() => { toast.classList.remove('show'); }, 4000);
-    }
-  }
-
-  // --- LÓGICA DE BÚSQUEDA DE C.P. ---
+  // --- LÓGICA DE BÚSQUEDA DE CÓDIGO POSTAL ---
   const cpInput = document.getElementById('codigoPostal');
   const cpStatus = document.getElementById('cp-status');
   const ciudadInput = document.getElementById('ciudad');
@@ -398,17 +250,21 @@
   const coloniaInput = document.getElementById('colonia-input');
   const containerSelect = document.getElementById('container-colonia-select');
   const containerInput = document.getElementById('container-colonia-input');
+  
   let abortController = null;
 
   cpInput.addEventListener('input', function() {
     let cpValue = this.value.trim();
-    if (cpValue.length === 5) buscarCP(cpValue);
-    else resetCPFields();
+    if (cpValue.length === 5) {
+      buscarCP(cpValue);
+    } else {
+      resetCPFields();
+    }
   });
 
   function resetCPFields() {
     ciudadInput.value = '';
-    coloniaSelect.innerHTML = '<option value="">Ingresa un C.P. primero</option>';
+    coloniaSelect.innerHTML = '<option value="">Primero ingresa un C.P.</option>';
     cpStatus.innerText = '';
     containerSelect.classList.remove('hidden');
     containerInput.classList.add('hidden');
@@ -416,8 +272,9 @@
   }
 
   function buscarCP(cp) {
-    cpStatus.style.color = 'var(--bic-blue)';
-    cpStatus.innerText = 'Consultando...';
+    cpStatus.style.color = '#0369a1';
+    cpStatus.innerText = 'Buscando...';
+    ciudadInput.value = 'Buscando...';
     
     if (abortController) abortController.abort();
     abortController = new AbortController();
@@ -427,74 +284,98 @@
       .then(data => {
         if (data.status === 'success') {
           ciudadInput.value = data.ciudad || 'No encontrada';
+          
           if (data.colonias && data.colonias.length > 0) {
             coloniaSelect.innerHTML = '<option value="">Selecciona tu colonia</option>';
             data.colonias.forEach(c => {
               let opt = document.createElement('option');
-              opt.value = c; opt.innerText = c;
+              opt.value = c;
+              opt.innerText = c;
               coloniaSelect.appendChild(opt);
             });
             containerSelect.classList.remove('hidden');
             containerInput.classList.add('hidden');
-            cpStatus.style.color = '#10B981';
-            cpStatus.innerText = 'C.P. Encontrado ✓';
+            cpStatus.style.color = 'green';
+            cpStatus.innerText = 'Encontrado';
           } else {
-            cpStatus.style.color = '#F59E0B';
-            cpStatus.innerText = 'No hay colonias. Escríbela manualmente.';
+            cpStatus.style.color = '#d97706';
+            cpStatus.innerText = 'C.P. sin colonias. Escríbela:';
+            ciudadInput.value = '';
             containerSelect.classList.add('hidden');
             containerInput.classList.remove('hidden');
           }
         } else {
-          cpStatus.style.color = '#EF4444';
-          cpStatus.innerText = 'C.P. inválido.';
+          cpStatus.style.color = 'red';
+          cpStatus.innerText = 'No encontrado. Ingresa manualmente.';
+          ciudadInput.value = '';
           containerSelect.classList.add('hidden');
           containerInput.classList.remove('hidden');
         }
       })
       .catch(err => {
-        if (err.name !== 'AbortError') { cpStatus.innerText = 'Error de red.'; }
+        if (err.name !== 'AbortError') {
+          cpStatus.style.color = 'red';
+          cpStatus.innerText = 'Error de conexión.';
+          ciudadInput.value = '';
+          containerSelect.classList.add('hidden');
+          containerInput.classList.remove('hidden');
+        }
       });
   }
 
-  // --- LÓGICA DE HIJOS (DISEÑO PREMIUM) ---
+  // --- LÓGICA DINÁMICA DE HIJOS (EN FILAS) ---
   const tieneHijos = document.getElementById('tieneHijos');
   const seccionCantidad = document.getElementById('seccionCantidadHijos');
   const cantidadHijos = document.getElementById('cantidadHijos');
   const contenedorHijos = document.getElementById('contenedorHijos');
 
   tieneHijos.addEventListener('change', function() {
-    if (this.value === 'Si') { seccionCantidad.classList.remove('hidden'); } 
-    else { seccionCantidad.classList.add('hidden'); cantidadHijos.value = "0"; contenedorHijos.innerHTML = ''; }
+    if (this.value === 'Si') {
+      seccionCantidad.classList.remove('hidden');
+    } else {
+      seccionCantidad.classList.add('hidden');
+      cantidadHijos.value = "0";
+      contenedorHijos.innerHTML = '';
+    }
   });
 
   cantidadHijos.addEventListener('change', function() {
     let cantidad = parseInt(this.value);
     contenedorHijos.innerHTML = ''; 
+    
     for(let i = 1; i <= cantidad; i++) {
       contenedorHijos.innerHTML += `
-        <div class="child-row">
-          <div class="input-group">
-            <label class="input-label" style="color:var(--bic-blue);">Nombre Completo - Hijo ${i}</label>
-            <input type="text" id="hijo${i}" class="form-control" required>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed #ccc;">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label style="color:#0369a1;">Nombre Hijo ${i}</label>
+            <input type="text" id="hijo${i}" required>
           </div>
-          <div class="input-group">
-            <label class="input-label" style="color:var(--bic-blue);">Fecha Nacimiento - Hijo ${i}</label>
-            <input type="date" id="fechaNacHijo${i}" class="form-control" required>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label style="color:#0369a1;">Fecha Nac. Hijo ${i}</label>
+            <input type="date" id="fechaNacHijo${i}" required>
           </div>
         </div>
       `;
     }
   });
 
-  // --- ENVÍO DEL FORMULARIO ---
+  // --- LÓGICA DE ENVÍO DEL FORMULARIO ---
   document.getElementById('datosForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const btn = document.getElementById('btnEnviar');
+    const status = document.getElementById('status');
+    
     btn.disabled = true;
-    btn.innerText = "Procesando...";
-    showToast('Guardando información de forma segura...', 'loading');
+    status.style.color = '#555';
+    status.innerText = 'Guardando información...';
 
-    let coloniaFinal = containerInput.classList.contains('hidden') ? coloniaSelect.value : coloniaInput.value;
+    // Determinar qué colonia enviar
+    let coloniaFinal = "";
+    if (containerInput.classList.contains('hidden')) {
+      coloniaFinal = coloniaSelect.value;
+    } else {
+      coloniaFinal = coloniaInput.value;
+    }
 
     const payload = {
       numeroEmpleado: document.getElementById('numeroEmpleado').value,
@@ -518,6 +399,7 @@
       fechaNacPareja: document.getElementById('fechaNacPareja').value
     };
 
+    // Recolectar datos de los hijos
     for(let i = 1; i <= 10; i++) {
       let campoHijo = document.getElementById(`hijo${i}`);
       let campoFecha = document.getElementById(`fechaNacHijo${i}`);
@@ -525,23 +407,31 @@
       payload[`fechaNacHijo${i}`] = campoFecha ? campoFecha.value : "";
     }
 
-    fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(payload) })
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload)
+    })
     .then(() => {
-      showToast('¡Datos guardados exitosamente!', 'success');
+      status.style.color = 'green';
+      status.innerText = '¡Registro guardado correctamente!';
       document.getElementById('datosForm').reset();
       resetCPFields();
       seccionCantidad.classList.add('hidden');
       contenedorHijos.innerHTML = '';
       btn.disabled = false;
-      btn.innerText = "Guardar Registro de Datos";
+      setTimeout(() => { status.innerText = ''; }, 5000);
     })
     .catch(error => {
-      showToast('Error de conexión. Intente nuevamente.', 'error');
+      status.style.color = 'red';
+      status.innerText = 'Ocurrió un error al intentar enviar el registro.';
       btn.disabled = false;
-      btn.innerText = "Guardar Registro de Datos";
     });
   });
 </script>
 
 </body>
 </html>
+
+```
