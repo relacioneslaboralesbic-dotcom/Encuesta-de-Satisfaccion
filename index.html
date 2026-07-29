@@ -21,7 +21,32 @@
       max-width: 800px;
       width: 100%;
     }
-    h2 { color: #333; margin-top: 0; }
+    
+    .top-logo {
+      max-width: 180px;
+      display: block;
+      margin: 0 auto 20px auto;
+    }
+    .section-icon {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+    }
+    .inline-icon {
+      height: 1.2em;
+      width: auto;
+      vertical-align: text-bottom;
+      margin-right: 6px;
+    }
+    .bottom-bar {
+      width: 100%;
+      height: auto;
+      margin-top: 40px;
+      border-radius: 4px;
+      display: block;
+    }
+
+    h2 { color: #333; margin-top: 0; text-align: center; }
     h3 {
       color: #333;
       font-size: 1.1rem;
@@ -29,6 +54,9 @@
       padding-bottom: 8px;
       margin-top: 25px;
       margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
     .badge-anon {
       background: #e0f2fe;
@@ -36,8 +64,9 @@
       padding: 6px 12px;
       border-radius: 20px;
       font-size: 0.85rem;
-      display: inline-block;
-      margin-bottom: 20px;
+      display: block;
+      width: fit-content;
+      margin: 0 auto 20px auto;
       font-weight: bold;
     }
     .grid {
@@ -45,6 +74,7 @@
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 15px;
     }
+    
     .form-group { margin-bottom: 15px; }
     label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; font-size: 0.9rem; }
     input, select, textarea {
@@ -81,12 +111,14 @@
 <body>
 
 <div class="card">
+  <img src="Logo.png" alt="Logo" class="top-logo">
+  
   <h2>Actualización de Datos</h2>
   <div class="badge-anon">🔒 Formulario Seguro sin Inicio de Sesión Requerido</div>
 
   <form id="datosForm">
     
-    <h3>Datos Personales</h3>
+    <h3><img src="Datos.png" class="section-icon" alt="Datos"> Datos Personales</h3>
     <div class="grid">
       <div class="form-group">
         <label>Número de Empleado *</label>
@@ -121,7 +153,7 @@
       </div>
     </div>
 
-    <h3>Domicilio y Contacto</h3>
+    <h3><img src="Domicilio.png" class="section-icon" alt="Domicilio"> Domicilio y Contacto</h3>
     <div class="grid">
       <div class="form-group">
         <label>Código Postal *</label>
@@ -153,7 +185,7 @@
         <input type="text" id="numeroDomicilio">
       </div>
       <div class="form-group">
-        <label>Teléfono (WhatsApp) *</label>
+        <label><img src="whatsapp.png" class="inline-icon" alt="WhatsApp"> Teléfono (WhatsApp) *</label>
         <input type="tel" id="telefonoWhatsapp" required>
       </div>
       <div class="form-group">
@@ -162,28 +194,24 @@
       </div>
     </div>
 
-    <h3>Contactos de Emergencia</h3>
+    <h3><img src="Emergencia.png" class="section-icon" alt="Emergencia"> Contactos de Emergencia y Tallas</h3>
     <div class="grid">
       <div class="form-group">
         <label>Contacto de Emergencia 1 *</label>
         <input type="text" id="nombreContactoEmergencia" required>
       </div>
       <div class="form-group">
-        <label>Teléfono Emergencia 1 *</label>
+        <label><img src="whatsapp.png" class="inline-icon" alt="WhatsApp"> Tel. Emergencia 1 (WhatsApp) *</label>
         <input type="tel" id="telefonoContactoEmergencia" required>
       </div>
       <div class="form-group">
-        <label>Contacto de Emergencia 2 (Opcional)</label>
+        <label>Contacto de Emergencia 2</label>
         <input type="text" id="nombreContactoEmergencia2">
       </div>
       <div class="form-group">
-        <label>Teléfono Emergencia 2 (Opcional)</label>
+        <label><img src="whatsapp.png" class="inline-icon" alt="WhatsApp"> Tel. Emergencia 2 (WhatsApp)</label>
         <input type="tel" id="telefonoContactoEmergencia2">
       </div>
-    </div>
-
-    <h3>Tallas</h3>
-    <div class="grid">
       <div class="form-group">
         <label>Talla de Playera</label>
         <select id="tallaPlayera">
@@ -204,9 +232,9 @@
       </div>
     </div>
 
-    <h3>Información Familiar</h3>
+    <h3><img src="Family.png" class="section-icon" alt="Familia"> Información Familiar</h3>
     
-    <!-- Seccion de Pareja (Oculta por defecto) -->
+    <!-- Contenedor de Pareja (Se oculta/muestra por JS) -->
     <div id="seccionPareja" class="grid hidden">
       <div class="form-group">
         <label>Nombre de Pareja</label>
@@ -218,7 +246,6 @@
       </div>
     </div>
 
-    <!-- Seccion de Hijos -->
     <div class="grid" style="margin-top: 15px;">
       <div class="form-group">
         <label>¿Tiene hijos?</label>
@@ -247,16 +274,17 @@
   </form>
 
   <div id="status"></div>
+  
+  <img src="barra.jpg" alt="Barra Decorativa" class="bottom-bar">
 </div>
 
 <script>
-  // TU URL DE GOOGLE APPS SCRIPT
+  // URL DE GOOGLE APPS SCRIPT
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwY98H0V5z8dwo3m9sjxaeTXkG9aGWMtSKvEY_xwH7twITEzDXBISv-dD2dXXcXEPSa/exec';
 
-  // --- AUTOFORMATO (Capital Case) ---
+  // Lógica de Autoformato a Mayúsculas/Minúsculas en nombres
   document.addEventListener('input', function(e) {
     if (e.target.tagName === 'INPUT' && e.target.type === 'text') {
-      // Excluir campos que no deben formatearse
       const excludedIds = ['codigoPostal', 'numeroDomicilio', 'correo', 'numeroEmpleado'];
       if (excludedIds.includes(e.target.id)) return;
       
@@ -265,7 +293,6 @@
       const end = el.selectionEnd;
       const val = el.value;
 
-      // Convertir primera letra de cada palabra a mayúscula
       const newVal = val.toLowerCase().replace(/(?:^|[\s\-\'\´\`])\S/g, function(match) {
         return match.toUpperCase();
       });
@@ -277,7 +304,6 @@
     }
   });
 
-  // --- LÓGICA DE PAREJA (Estado Civil) ---
   const estadoCivil = document.getElementById('estadoCivil');
   const seccionPareja = document.getElementById('seccionPareja');
   
@@ -291,7 +317,6 @@
     }
   });
 
-  // --- LÓGICA DE BÚSQUEDA DE CÓDIGO POSTAL ---
   const cpInput = document.getElementById('codigoPostal');
   const cpStatus = document.getElementById('cp-status');
   const ciudadInput = document.getElementById('ciudad');
@@ -372,7 +397,6 @@
       });
   }
 
-  // --- LÓGICA DINÁMICA DE HIJOS (EN FILAS) ---
   const tieneHijos = document.getElementById('tieneHijos');
   const seccionCantidad = document.getElementById('seccionCantidadHijos');
   const cantidadHijos = document.getElementById('cantidadHijos');
@@ -408,7 +432,6 @@
     }
   });
 
-  // --- LÓGICA DE ENVÍO DEL FORMULARIO ---
   document.getElementById('datosForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const btn = document.getElementById('btnEnviar');
